@@ -1,28 +1,49 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+    <div id="app" class="container pt-3" style="box-shadow: 0 0 10px 0 #959595; height: 98vh">
+        <app-header></app-header>
+        <transition name="component-fade" mode="out-in">
+            <router-view/>
+        </transition>
+    </div>
 </template>
-
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+    import Header from './components/Header'
 
-export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+    export default {
+        components: {
+            'app-header': Header
+        },
+        created() {
+            this.$store.dispatch('stock/initStocks');
+        }
+    }
 </script>
+<style scoped>
+    .component-fade-enter-active {
+       animation: slide-left 300ms ease-in forwards;
+    }
+    .component-fade-leave-active {
+        animation: slide-right 300ms ease-in forwards;
+    }
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+    @keyframes slide-left {
+        from{
+            transform: translateX(-10px);
+            opacity: 0;
+        }
+        to{
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    @keyframes slide-right {
+        from{
+            transform: translateX(0);
+            opacity: 1;
+        }
+        to{
+            transform: translateX(10px);
+            opacity: 0;
+        }
+    }
 </style>
